@@ -1,18 +1,11 @@
-'use strict';
+'use strict'
 
-module.exports.hello = async event => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify(
-      {
-        message: 'Go Serverless v1.0! Your function executed successfully!',
-        input: event,
-      },
-      null,
-      2
-    ),
-  };
+const s3Service = require('./service/s3Service')
 
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
-};
+module.exports.upload = async (event) => {
+    const result = await s3Service.upload(event.body)
+    return {
+        statusCode: 201,
+        body: JSON.stringify(result),
+    }
+}

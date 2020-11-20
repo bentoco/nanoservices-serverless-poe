@@ -12,9 +12,14 @@
 # Happy Coding!
 
 service: http-handler
-# app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
+plugins:
+ - serverless-apigw-binary
+ - serverless-offline
+
+custom:
+  apigwBinary:
+    types:           
+      - 'image/jpeg'
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -58,15 +63,16 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
+  upload:
+    handler: handler.upload
+    role: arn:aws:iam::661087684535:role/lambda-http-handler
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
-#    events:
-#      - http:
-#          path: users/create
-#          method: get
+    events:
+     - http:
+         path: images
+         method: post
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
