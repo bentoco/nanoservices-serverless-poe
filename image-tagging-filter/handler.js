@@ -1,41 +1,22 @@
 'use strict'
 
-const AWS = require('aws-sdk')
+const rekognitionService = require('./service/rekognitionService')
 
-AWS.config.update({
-    region: 'us-east-1',
-})
-
-const rekognition = new AWS.Rekognition()
+const sqsService = require('./service/sqsService')
 
 module.exports.tag = async (event) => {
     const s3Info = JSON.parse(event.Records[0].Sns.Message)
     const bucket = s3Info.Records[0].s3.bucket.name
     const key = s3Info.Records[0].s3.object.key
 
-    const data = await new Promise((res, rej) => {
-        rekognition.detectLabels(
-            {
-                Image: {
-                    S3Object: {
-                        Bucket: bucket,
-                        Name: key,
-                    },
-                },
-                MinConfidence: 80,
-                MaxLabels: 6,
-            },
-            (err, data) => {
-                if (err) {
-                    return rej(err)
-                }
+    const labels = await rekognitionService.detectLabels(bucket, key)
+    const item = {}
+    item.key = key
+    item.labels = labels
+    item.eventType = 'TAG_EVENT'
 
-                return res(data)
-            }
-        )
-    })
+    await sqsService.putMessage(item)
 
-    console.log(data.Labels)
     return {
         message: 'Go Serverless v1.0! Your function executed successfully!',
         event,
