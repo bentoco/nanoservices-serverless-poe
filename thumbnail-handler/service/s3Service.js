@@ -30,16 +30,16 @@ const putObject = (buffer, filename) => {
         s3.putObject(
             {
                 Bucket: BUCKET,
-                Key: 'thumbnail-' + filename,
+                Key: filename,
                 Body: buffer,
             },
-            (err, data) => {
+            (err) => {
                 if (err) {
                     return rej(err)
                 }
                 return res({
                     bucket: BUCKET,
-                    key: 'thumbnail-' + filename,
+                    key: filename,
                 })
             }
         )

@@ -66,13 +66,24 @@ functions:
   upload:
     handler: handler.upload
     role: arn:aws:iam::661087684535:role/lambda-http-handler
-#    The following are a few example events you can configure
-#    NOTE: Please make sure to change your handler code to work with those events
-#    Check the event documentation for details
     events:
      - http:
          path: images
          method: post
+  
+  get:
+    handler: handler.get
+    role:
+    vpc:
+     subnetIds:
+      -
+     securityGroupsIds:
+      -  
+    events:
+     - http:
+         path: images
+         method: get
+         
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
