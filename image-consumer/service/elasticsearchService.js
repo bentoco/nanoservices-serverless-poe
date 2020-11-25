@@ -6,7 +6,7 @@ const client = new elasticsearch.Client({
 })
 
 const index = async (doc) => {
-    await client.index({
+    return await client.index({
         index: 'imagens',
         type: 'object',
         body: doc,
