@@ -4,6 +4,7 @@ const elasticSearchService = require('./service/elasticsearchService')
 const dynamodbService = require('./service/dynamodbService')
 
 module.exports.consumer = async (event) => {
+    console.log('Evento SNS', JSON.stringify(event))
     for (const record of event.Records) {
         const item = JSON.parse(record.body)
         const dbItem = await dynamodbService.getItem(item.key)
