@@ -73,12 +73,12 @@ functions:
   
   get:
     handler: handler.get
-    role:
+    role: arn:aws:iam::661087684535:role/lambda-http-handler
     vpc:
      subnetIds:
-      -
+      - subnet-0a59b823bcfcf2c2f
      securityGroupsIds:
-      -  
+      - sg-0d23b0025a725d9f8
     events:
      - http:
          path: images
